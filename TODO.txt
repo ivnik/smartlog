@@ -1,0 +1,26 @@
+TODO:
+
+
+dev:
+
+1. write tests
+2. write examples & documentation
+3. advanced log format (conditionals, date/number formats, mdc/std attr, keep/strip cr/lf, attr toString/jsondump)
+4. make configurable:
+    - keep/strip cr/lf
+    - reaction on errors: failfast, log
+5. add trace with exception (and class:line info)
+6. use returned value as "result" of result is absent (for aspect)
+7. make LogContext AutoClosable (try-with-resources if no aspect)
+
+other:
+1. register on maven central (http://central.sonatype.org/pages/producers.html)
+2. github / bitbucket?
+3. ci: travis?
+4. benchmark
+5. profile - check bottlenecks [low]
+6. documentation - using aspects a) CTW b) LTW c) spring aop
+7. test coverate (jacoco?)
+
+low level:
+1. json format / integration with logstash?
