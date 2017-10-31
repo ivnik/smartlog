@@ -11,6 +11,7 @@ import org.smartlog.SmartLogConfig;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @Aspect
@@ -28,7 +29,8 @@ public class LogAspect {
         return loggable;
     }
 
-    private Class findRootDeclaringClass(final Class clazz) {
+    @Nonnull
+    private static Class findRootDeclaringClass(final Class clazz) {
         Class curr = clazz;
         while (true) {
             Class declaringClass = curr.getDeclaringClass();
@@ -46,16 +48,11 @@ public class LogAspect {
         final Loggable loggable = findLoggable(thisJoinPoint);
 
         if (loggable == null) {
-            SmartLogConfig.getConfig()
-                    .getInternalErrorHandler()
-                    .accept("@Loggable not found for: " + thisJoinPoint.getSignature().getDeclaringType());
+            throw new RuntimeException("Internal error. No @Loggable found for: " + thisJoinPoint.getSignature());
         }
 
-        final LogContext ctx = SmartLog.start(STUB);
-
-        if (loggable != null) {
-            ctx.level(loggable.defaultLevel());
-        }
+        final LogContext ctx = SmartLog.start(STUB)
+                .level(loggable.defaultLevel());
 
         LoggableCallback callback = null;
         try {
@@ -95,10 +92,9 @@ public class LogAspect {
                 }
             } finally {
                 if (ctx.output() == STUB) {
+                    // use default output if @Loggable method does not change output
                     final Class clazz = findRootDeclaringClass(thisJoinPoint.getSignature().getDeclaringType());
-                    final Output output = Slf4JOutput.create()
-                            .withLoggerFor(clazz)
-                            .build();
+                    final Output output = SmartLogConfig.getConfig().getDefaultOutput(clazz);
 
                     ctx.output(output);
                 }

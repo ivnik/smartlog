@@ -4,14 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartlog.format.Format;
 import org.smartlog.format.SimpleTextFormat;
+import org.smartlog.output.Output;
+import org.smartlog.output.Slf4JOutput;
 
-import java.util.function.Consumer;
+import javax.annotation.Nonnull;
+import java.util.function.Function;
 
 /**
  * todo -
  * 1) make class thread safe
  * 2) load settings from smartlog.properties using ClassLoader.getInputStream
- * 3) add method freeze (any changes - throw exception)
+ * 3) add method freeze? (protect from changes - throw exception)
  * 4) fluent setters / builder
  */
 public class SmartLogConfig {
@@ -21,10 +24,11 @@ public class SmartLogConfig {
 
     private Format defaultFormat = new SimpleTextFormat("${title} - [${result}], trace: [${trace}] [${time} ms]");
 
-    // todo - remove?
-    private Consumer<String> internalErrorHandler = FAIL_FAST;
-
     private boolean replaceCrLf = true;
+
+    private Function<Class, Output> defaultOutputResolver = (clazz) -> Slf4JOutput.create()
+            .withLoggerFor(clazz)
+            .build();
 
     public static SmartLogConfig getConfig() {
         return config;
@@ -42,14 +46,6 @@ public class SmartLogConfig {
         this.defaultFormat = defaultFormat;
     }
 
-    public Consumer<String> getInternalErrorHandler() {
-        return internalErrorHandler;
-    }
-
-    public void setInternalErrorHandler(final Consumer<String> internalErrorHandler) {
-        this.internalErrorHandler = internalErrorHandler;
-    }
-
     public boolean isReplaceCrLf() {
         return replaceCrLf;
     }
@@ -58,9 +54,13 @@ public class SmartLogConfig {
         this.replaceCrLf = replaceCrLf;
     }
 
-    public static final Consumer<String> FAIL_FAST = s -> {
-        throw new RuntimeException(s);
-    };
+    @Nonnull
+    public Output getDefaultOutput(final Class clazz) {
+        // todo - add cache class -> output
+        return defaultOutputResolver.apply(clazz);
+    }
 
-    public static final Consumer<String> LOG_ERROR = LOGGER::error;
+    public void setDefaultOutputResolver(final Function<Class, Output> defaultOutputResolver) {
+        this.defaultOutputResolver = defaultOutputResolver;
+    }
 }
