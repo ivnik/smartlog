@@ -25,9 +25,9 @@ public class SmartLog {
             log.output()
                     .write(log);
 
-            // recover old MDC variables
-            // and old thread name
-            log.clearMDC()
+            // recover old MDC variables and old thread name
+            log.endTime(System.currentTimeMillis())
+                    .clearMDC()
                     .recoverThreadName();
         } else {
             throw new RuntimeException("Empty stack");

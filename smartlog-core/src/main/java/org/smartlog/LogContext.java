@@ -17,6 +17,8 @@ import static java.lang.System.currentTimeMillis;
 @NotThreadSafe
 public class LogContext implements AutoCloseable {
     private final long startTime = currentTimeMillis();
+    private long endTime = 0;
+
     private Output output;
     /**
      * Log level
@@ -100,6 +102,15 @@ public class LogContext implements AutoCloseable {
 
     public long startTime() {
         return startTime;
+    }
+
+    public long endTime() {
+        return endTime;
+    }
+
+    protected LogContext endTime(final long endTime) {
+        this.endTime = endTime;
+        return this;
     }
 
     @Nullable

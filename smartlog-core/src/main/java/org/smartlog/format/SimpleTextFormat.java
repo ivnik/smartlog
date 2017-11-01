@@ -24,8 +24,7 @@ public class SimpleTextFormat implements Format {
         STD_ATTRS.put("title", (log, builder) -> builder.append(log.title()));
         STD_ATTRS.put("result", (log, builder) -> builder.append(log.result()));
         STD_ATTRS.put("trace", (log, builder) -> builder.append(log.trace()));
-        // todo - may be end time store in logcontext instead currentTimeMullis() here
-        STD_ATTRS.put("time", (log, builder) -> builder.append(currentTimeMillis() - log.startTime()));
+        STD_ATTRS.put("time", (log, builder) -> builder.append(log.endTime() - log.startTime()));
     }
 
     @Nonnull
