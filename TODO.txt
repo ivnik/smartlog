@@ -10,11 +10,9 @@ dev:
     - keep/strip cr/lf
     - reaction on errors: failfast, log
 5. add trace with exception (and class:line info)
-6. use returned value as "result" of result is absent (for aspect)
 
 other:
 1. register on maven central (http://central.sonatype.org/pages/producers.html)
-2. github / bitbucket?
 3. ci: travis?
 4. benchmark
 5. profile - check bottlenecks [low]
