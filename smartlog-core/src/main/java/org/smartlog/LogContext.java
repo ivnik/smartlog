@@ -340,7 +340,7 @@ public class LogContext implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         SmartLog.finish();
     }
 

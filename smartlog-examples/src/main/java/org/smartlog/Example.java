@@ -4,6 +4,8 @@ import org.smartlog.format.SimpleTextFormat;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
+import java.io.IOException;
+
 /**
  *
  */
@@ -13,7 +15,7 @@ public class Example {
         .withFormat(new SimpleTextFormat("${title}, result: [${result}], var=${var}, trace: [${trace}] [${time} ms]"))
         .build();
 
-    public static void example() {
+    public static void example1() {
         SmartLog.start(SL_OUTPUT)
                 .title("main");
 
@@ -30,7 +32,19 @@ public class Example {
         }
     }
 
+    public static void example2() {
+        try (LogContext log = SmartLog.start(SL_OUTPUT).title("main")) {
+            log.trace("test");
+            log.trace("hello %s", "alice");
+
+            log.attach("var", 5);
+
+            log.result("OK");
+        }
+    }
+
     public static void main(final String[] args) {
-        Example.example();
+        Example.example1();
+        Example.example2();
     }
 }

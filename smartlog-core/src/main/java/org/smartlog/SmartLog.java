@@ -22,12 +22,12 @@ public class SmartLog {
         if (!list.isEmpty()) {
             final LogContext log = list.pop();
 
+            log.endTime(System.currentTimeMillis());
             log.output()
                     .write(log);
 
             // recover old MDC variables and old thread name
-            log.endTime(System.currentTimeMillis())
-                    .clearMDC()
+            log.clearMDC()
                     .recoverThreadName();
         } else {
             throw new RuntimeException("Empty stack");

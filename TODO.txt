@@ -11,7 +11,6 @@ dev:
     - reaction on errors: failfast, log
 5. add trace with exception (and class:line info)
 6. use returned value as "result" of result is absent (for aspect)
-7. make LogContext AutoClosable (try-with-resources if no aspect)
 
 other:
 1. register on maven central (http://central.sonatype.org/pages/producers.html)

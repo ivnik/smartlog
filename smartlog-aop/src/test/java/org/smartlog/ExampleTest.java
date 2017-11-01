@@ -49,6 +49,7 @@ public class ExampleTest implements LoggableCallback {
     public static void example4() {
     }
 
+
     @Test
     public void test() {
         ExampleTest.example1();
