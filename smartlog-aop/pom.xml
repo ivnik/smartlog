@@ -36,6 +36,7 @@
                         <include>**/*.java</include>
                         <include>**/*.aj</include>
                     </includes>
+                    <Xlint>adviceDidNotMatch=ignore</Xlint>
                 </configuration>
                 <executions>
                     <execution>
