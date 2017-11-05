@@ -22,7 +22,11 @@ public class SimpleTextFormat implements Format {
     static {
         STD_ATTRS = new HashMap<>();
         STD_ATTRS.put("title", (log, builder) -> builder.append(log.title()));
-        STD_ATTRS.put("result", (log, builder) -> builder.append(log.result()));
+        STD_ATTRS.put("result", (log, builder) -> {
+            if (log.result() != null) {
+                builder.append(log.result());
+            }
+        });
         STD_ATTRS.put("trace", (log, builder) -> builder.append(log.trace()));
         STD_ATTRS.put("time", (log, builder) -> builder.append(log.endTime() - log.startTime()));
     }
