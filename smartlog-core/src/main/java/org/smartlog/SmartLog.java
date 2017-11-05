@@ -35,7 +35,7 @@ public class SmartLog {
     }
 
     @Nonnull
-    protected static LogContext current() {
+    public static LogContext current() {
         final LinkedList<LogContext> list = CONTEXTS.get();
         if (!list.isEmpty()) {
             return list.getLast();
