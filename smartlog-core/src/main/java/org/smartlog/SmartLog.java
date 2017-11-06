@@ -132,7 +132,7 @@ public class SmartLog {
     }
 
     @Nonnull
-    public LogContext trace(@Nonnull final TraceFlag flag, @Nonnull final String msg, @Nonnull final Object... args) {
+    public static LogContext trace(@Nonnull final TraceFlag flag, @Nonnull final String msg, @Nonnull final Object... args) {
         return current().trace(flag, msg, args);
     }
 
@@ -142,8 +142,18 @@ public class SmartLog {
     }
 
     @Nonnull
+    public static LogContext result(final String description, final Object... args) {
+        return current().result(description, args);
+    }
+
+    @Nonnull
     public static LogContext result(final LogLevel level, final Object result) {
         return current().result(level, result);
+    }
+
+    @Nonnull
+    public static LogContext result(final LogLevel level, final String description, final Object... args) {
+        return current().result(level, description, args);
     }
 
     @Nonnull

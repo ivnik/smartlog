@@ -66,19 +66,125 @@ public class SmartLogTest {
         SmartLog.attach("var", "val");
         SmartLog.trace("trace1");
         SmartLog.trace("trace2");
-        SmartLog.trace(TraceFlag.WRITE_TIME, "trace3");
-        SmartLog.trace("trace%d", 4);
+        SmartLog.trace(TraceFlag.MARK_TIME, "trace3");
+        SmartLog.trace(TraceFlag.WRITE_TIME, "trace4");
+        SmartLog.trace(TraceFlag.WRITE_AND_MARK_TIME, "trace5");
+        SmartLog.trace("trace%d", 6);
+        SmartLog.trace(TraceFlag.MARK_TIME, "trace%d", 7);
         SmartLog.result("test-result");
 
         Thread.sleep(5);
 
         SmartLog.finish();
 
-        ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(logger).debug(msgCaptor.capture());
 
         Assertions.assertThat(msgCaptor.getValue())
-                .matches("test-title - test-result, var=val, trace: \\[trace1; trace2; trace3 \\[\\d+ ms\\]; trace4\\] \\[\\d+ ms\\]");
+                .matches("test-title - test-result, var=val, trace: \\[trace1; trace2; trace3; trace4 \\[\\d+ ms\\]; trace5 \\[\\d+ ms\\]; trace6; trace7\\] \\[\\d+ ms\\]");
+    }
+
+    @Test
+    public void testTitleWithArgs() throws Exception {
+        SmartLog.start(output);
+
+        SmartLog.format(new SimpleTextFormat("${title}"));
+        SmartLog.title("test-title: %d", 42);
+        SmartLog.finish();
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).info(msgCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .isEqualTo("test-title: 42");
+    }
+
+    @Test
+    public void testResultWithArgs() throws Exception {
+        SmartLog.start(output);
+
+        SmartLog.format(new SimpleTextFormat("${result}"));
+        SmartLog.result("test-result: %d", 42);
+
+        SmartLog.finish();
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).info(msgCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .matches("test-result: 42");
+    }
+
+    @Test
+    public void testResultWithLevel() throws Exception {
+        SmartLog.start(output);
+
+        SmartLog.format(new SimpleTextFormat("${result}"));
+        SmartLog.result(LogLevel.WARN, "test-result");
+
+        SmartLog.finish();
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).warn(msgCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .matches("test-result");
+    }
+
+    @Test
+    public void testResultWithLevelAndArgs() throws Exception {
+        SmartLog.start(output);
+
+        SmartLog.format(new SimpleTextFormat("${result}"));
+        SmartLog.result(LogLevel.WARN, "test-result: %d", 42);
+
+        SmartLog.finish();
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).warn(msgCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .matches("test-result: 42");
+    }
+
+    @Test
+    public void testResultWithLevelAndThrowable() throws Exception {
+        SmartLog.start(output);
+
+        SmartLog.format(new SimpleTextFormat("${result}"));
+        final RuntimeException exception = new RuntimeException("test");
+        SmartLog.result(LogLevel.WARN, exception, "test-result");
+
+        SmartLog.finish();
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<Exception> exceptionCaptor = ArgumentCaptor.forClass(Exception.class);
+        Mockito.verify(logger).warn(msgCaptor.capture(), exceptionCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .matches("test-result");
+        assertThat(exceptionCaptor.getValue())
+                .isSameAs(exception);
+    }
+
+    @Test
+    public void testResultWithLevelAndThrowableAndArgs() throws Exception {
+        SmartLog.start(output);
+
+        SmartLog.format(new SimpleTextFormat("${result}"));
+        final RuntimeException exception = new RuntimeException("test");
+        SmartLog.result(LogLevel.WARN, exception, "test-result: %d", 42);
+
+        SmartLog.finish();
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        final ArgumentCaptor<Exception> exceptionCaptor = ArgumentCaptor.forClass(Exception.class);
+        Mockito.verify(logger).warn(msgCaptor.capture(), exceptionCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .matches("test-result: 42");
+        assertThat(exceptionCaptor.getValue())
+                .isSameAs(exception);
     }
 
     @Test
@@ -99,7 +205,7 @@ public class SmartLogTest {
 
         assertThat(exceptionCaptor.getValue()).hasSuppressedException(e1);
         assertThat(exceptionCaptor.getValue()).hasSuppressedException(e2);
-        assertThat(exceptionCaptor.getValue()).isEqualTo(e3);
+        assertThat(exceptionCaptor.getValue()).isSameAs(e3);
     }
 
     @Test
@@ -112,6 +218,28 @@ public class SmartLogTest {
         SmartLog.finish();
 
         Mockito.verify(loggableCallback).afterLoggable();
+    }
+
+    @Test
+    public void testCallbackExceptions() throws Exception {
+        final LoggableCallback loggableCallback = mock(LoggableCallback.class);
+        final RuntimeException beforeLoggableException = new RuntimeException("before-loggable-exception");
+        final RuntimeException afterLoggableException = new RuntimeException("after-loggable-exception");
+
+        doThrow(beforeLoggableException)
+                .when(loggableCallback).beforeLoggable();
+        doThrow(afterLoggableException)
+                .when(loggableCallback).afterLoggable();
+
+        SmartLog.start(output, loggableCallback);
+
+        SmartLog.finish();
+
+        ArgumentCaptor<Exception> exceptionCaptor = ArgumentCaptor.forClass(Exception.class);
+        Mockito.verify(logger).info(anyString(), exceptionCaptor.capture());
+
+        assertThat(exceptionCaptor.getValue()).isSameAs(afterLoggableException);
+        assertThat(exceptionCaptor.getValue()).hasSuppressedException(beforeLoggableException);
     }
 
     @Test
@@ -151,13 +279,60 @@ public class SmartLogTest {
     public void testThreadName() throws Exception {
         final String oldName = Thread.currentThread().getName();
 
-        SmartLog.start(output)
+        final LogContext ctx = SmartLog.start(output)
                 .threadName("new-thread-name");
 
+
+        assertThat(ctx.oldThreadName()).isEqualTo(oldName);
         assertThat(Thread.currentThread().getName()).isEqualTo("new-thread-name");
 
         SmartLog.finish();
 
         assertThat(Thread.currentThread().getName()).isEqualTo(oldName);
+    }
+
+    @Test
+    public void testAutoclosable() throws Exception {
+        try (LogContext ctx = SmartLog.start(output)) {
+            ctx.format(new SimpleTextFormat("msg"));
+        }
+
+        final ArgumentCaptor<String> msgCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).info(msgCaptor.capture());
+
+        Assertions.assertThat(msgCaptor.getValue())
+                .matches("msg");
+    }
+
+    @Test
+    public void testRedefineOutput() throws Exception {
+        Output output = mock(Output.class);
+
+        LogContext ctx = SmartLog.start(this.output)
+                .format(new SimpleTextFormat("${title} - ${result}, var=${var}, trace: [${trace}] [${time} ms]"))
+                .output(output);
+
+        SmartLog.finish();
+
+        Mockito.verify(logger, never()).info(anyString());
+        Mockito.verify(output).write(same(ctx));
+    }
+
+    @Test
+    public void currentThrowExceptionIfNoLogContext() throws Exception {
+        try {
+            SmartLog.current();
+        } catch (Exception e) {
+            Assertions.assertThat(e).hasMessage("Empty stack");
+        }
+    }
+
+    @Test
+    public void finishThrowExceptionIfNoLogContext() throws Exception {
+        try {
+            SmartLog.finish();
+        } catch (Exception e) {
+            Assertions.assertThat(e).hasMessage("Empty stack");
+        }
     }
 }

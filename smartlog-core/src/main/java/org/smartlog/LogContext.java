@@ -90,12 +90,6 @@ public class LogContext implements AutoCloseable {
     @Nullable
     private String oldThreadName;
 
-
-    protected LogContext(@Nonnull final Output output, @Nonnull final Object loggableObject) {
-        this(output);
-        this.loggableObject = loggableObject;
-    }
-
     protected LogContext(@Nonnull final Output output) {
         this.output = output;
     }
@@ -201,9 +195,20 @@ public class LogContext implements AutoCloseable {
     }
 
     @Nonnull
+    public LogContext result(final String description, final Object... args) {
+        return result(String.format(description, args));
+    }
+
+    @Nonnull
     public LogContext result(final LogLevel level, final Object result) {
         return level(level)
                 .result(result);
+    }
+
+    @Nonnull
+    public LogContext result(final LogLevel level, final String description, final Object... args) {
+        return level(level)
+                .result(String.format(description, args));
     }
 
     @Nonnull
@@ -335,16 +340,15 @@ public class LogContext implements AutoCloseable {
         return oldThreadName;
     }
 
-    protected void oldThreadName(@Nullable final String oldThreadName) {
-        this.oldThreadName = oldThreadName;
+    protected void oldThreadName(@Nonnull final String oldThreadName) {
+        if (this.oldThreadName == null) {
+            this.oldThreadName = oldThreadName;
+        }
     }
 
     @Nonnull
     public LogContext threadName(@Nonnull final String newName) {
-        if (oldThreadName == null) {
-            oldThreadName = Thread.currentThread().getName();
-        }
-
+        oldThreadName(Thread.currentThread().getName());
         Thread.currentThread().setName(newName);
         return this;
     }

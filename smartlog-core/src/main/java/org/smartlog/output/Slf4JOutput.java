@@ -9,6 +9,7 @@ import org.smartlog.Util;
 import org.smartlog.format.Format;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
@@ -96,6 +97,21 @@ public class Slf4JOutput implements Output {
         }
     }
 
+    @Nonnull
+    public Logger getLogger() {
+        return logger;
+    }
+
+    @Nullable
+    public Format getFormat() {
+        return format;
+    }
+
+    @Nullable
+    public Boolean getReplaceCrLf() {
+        return replaceCrLf;
+    }
+
     private String format(final LogContext log) {
         final Format fmt = selectFormat(log);
         final String rawMessage = fmt.format(log);
@@ -163,7 +179,7 @@ public class Slf4JOutput implements Output {
             return this;
         }
 
-        public Output build() {
+        public Slf4JOutput build() {
             return new Slf4JOutput(this);
         }
     }

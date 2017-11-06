@@ -2,7 +2,7 @@ package org.smartlog;
 
 import javax.annotation.Nonnull;
 
-public class Util {
+public final class Util {
     @Nonnull
     public static String stripCrLf(@Nonnull final String text) {
         final char[] src = text.toCharArray();

@@ -1,15 +1,18 @@
 package org.smartlog.output;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartlog.LogContext;
 import org.smartlog.LogLevel;
 import org.smartlog.SmartLogConfig;
 import org.smartlog.format.SimpleTextFormat;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -255,5 +258,46 @@ public class Slf4JOutputTest {
         output.write(ctx);
 
         Mockito.verify(logger).info(eq("output-format:\n\rtest\ntitle\n\r"));
+    }
+
+    @Test
+    public void testOutputLoggerForClass() {
+        final Slf4JOutput output = Slf4JOutput.create()
+                .withLoggerFor(Object.class)
+                .build();
+
+        assertThat(output.getLogger())
+                .isEqualTo(LoggerFactory.getLogger("java.lang.Object"));
+    }
+
+    @Test
+    public void testOutputLoggerForName() {
+        final Slf4JOutput output = Slf4JOutput.create()
+                .withLoggerFor("test")
+                .build();
+
+        assertThat(output.getLogger())
+                .isEqualTo(LoggerFactory.getLogger("test"));
+    }
+
+    @Test
+    public void testOutputLoggerForClassAndName() {
+        final Slf4JOutput output = Slf4JOutput.create()
+                .withLoggerFor(Object.class, "test")
+                .build();
+
+        assertThat(output.getLogger())
+                .isEqualTo(LoggerFactory.getLogger("java.lang.Object.test"));
+    }
+
+    @Test
+    public void testFailFastIfNoLogger() {
+        try {
+            Slf4JOutput.create()
+                    .build();
+            Assert.fail();
+        } catch (Exception e) {
+            assertThat(e).hasMessage("Logger is absent");
+        }
     }
 }
