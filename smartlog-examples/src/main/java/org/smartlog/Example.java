@@ -4,16 +4,14 @@ import org.smartlog.format.SimpleTextFormat;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
-import java.io.IOException;
-
 /**
  *
  */
 public class Example {
     private static final Output SL_OUTPUT = Slf4JOutput.create()
-        .withLoggerFor(Example.class)
-        .withFormat(new SimpleTextFormat("${title}, result: [${result}], var=${var}, trace: [${trace}] [${time} ms]"))
-        .build();
+            .withLoggerFor(Example.class)
+            .withFormat(new SimpleTextFormat("${title}, result: [${result}], var=${var}, trace: [${trace}] [${time} ms]"))
+            .build();
 
     public static void example1() {
         SmartLog.start(SL_OUTPUT)

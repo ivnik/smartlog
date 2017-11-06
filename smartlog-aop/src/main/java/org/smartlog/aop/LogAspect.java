@@ -1,7 +1,10 @@
 package org.smartlog.aop;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.smartlog.LogContext;
 import org.smartlog.SmartLog;
@@ -10,7 +13,6 @@ import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @Aspect
 public class LogAspect {
@@ -18,12 +20,17 @@ public class LogAspect {
             .withLoggerFor("stub")
             .build();
 
-    @Nullable
+    @Nonnull
     private static Loggable findLoggable(final JoinPoint joinPoint) {
         Loggable loggable = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(Loggable.class);
         if (loggable == null) {
             loggable = (Loggable) joinPoint.getSignature().getDeclaringType().getAnnotation(Loggable.class);
         }
+
+        if (loggable == null) {
+            throw new RuntimeException("Internal error. No @Loggable found for: " + joinPoint.getSignature());
+        }
+
         return loggable;
     }
 
@@ -41,19 +48,12 @@ public class LogAspect {
     }
 
     @Before("execution(@org.smartlog.aop.Loggable * *(..))")
-    public void beforeLoggable(final JoinPoint  joinPoint) throws Throwable {
+    public void beforeLoggable(final JoinPoint joinPoint) throws Throwable {
         final Loggable loggable = findLoggable(joinPoint);
 
-        if (loggable == null) {
-            throw new RuntimeException("Internal error. No @Loggable found for: " + joinPoint.getSignature());
-        }
-
-        SmartLog.start(STUB)
-                .level(loggable.defaultLevel());
-
-        if (joinPoint.getTarget() != null && joinPoint.getTarget() instanceof LoggableCallback) {
-            LoggableCallback callback = (LoggableCallback) joinPoint.getTarget();
-            callback.beforeLoggable();
+        final LogContext ctx = SmartLog.start(STUB, joinPoint.getTarget());
+        if (ctx.level() == null) {
+            ctx.level(loggable.defaultLevel());
         }
     }
 
@@ -74,29 +74,19 @@ public class LogAspect {
     }
 
     private void finish(final JoinPoint joinPoint, final LogContext ctx) {
-        try {
-            if (joinPoint.getTarget() != null && joinPoint.getTarget() instanceof LoggableCallback) {
-                final LoggableCallback callback = (LoggableCallback) joinPoint.getTarget();
-                callback.afterLoggable();
-            }
-        } catch (Throwable t) {
-            ctx.throwable(t);
-            throw t;
-        } finally {
-            // use method name if title is not set
-            if (ctx.title() == null) {
-                ctx.title(joinPoint.getSignature().getName());
-            }
-
-            if (ctx.output() == STUB) {
-                // use default output if @Loggable method didn't change output
-                final Class clazz = findRootDeclaringClass(joinPoint.getSignature().getDeclaringType());
-                final Output output = SmartLogConfig.getConfig().getDefaultOutput(clazz);
-
-                ctx.output(output);
-            }
-
-            SmartLog.finish();
+        // use method name if title is not set
+        if (ctx.title() == null) {
+            ctx.title(joinPoint.getSignature().getName());
         }
+
+        // use default output if @Loggable method didn't change output
+        if (ctx.output() == STUB) {
+            final Class clazz = findRootDeclaringClass(joinPoint.getSignature().getDeclaringType());
+            final Output output = SmartLogConfig.getConfig().getDefaultOutput(clazz);
+
+            ctx.output(output);
+        }
+
+        SmartLog.finish();
     }
 }

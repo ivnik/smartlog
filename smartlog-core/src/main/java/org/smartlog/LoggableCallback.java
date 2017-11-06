@@ -1,4 +1,4 @@
-package org.smartlog.aop;
+package org.smartlog;
 
 public interface LoggableCallback {
     default void beforeLoggable() {

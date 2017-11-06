@@ -12,22 +12,51 @@ public class SmartLog {
 
     @Nonnull
     public static LogContext start(@Nonnull final Output output) {
-        final LogContext context = new LogContext(output);
-        CONTEXTS.get().push(context);
-        return context;
+        final LogContext ctx = new LogContext(output);
+        CONTEXTS.get().push(ctx);
+
+        return ctx;
+    }
+    @Nonnull
+    public static LogContext start(@Nonnull final Output output, @Nullable final Object loggableObject) {
+        final LogContext ctx = start(output)
+                .loggableObject(loggableObject);
+
+        if (loggableObject != null && loggableObject instanceof LoggableCallback) {
+            final LoggableCallback callback = (LoggableCallback) loggableObject;
+
+            try {
+                callback.beforeLoggable();
+            } catch (Exception e) {
+                ctx.throwable(e);
+            }
+        }
+
+        return ctx;
     }
 
     public static void finish() {
         final LinkedList<LogContext> list = CONTEXTS.get();
         if (!list.isEmpty()) {
-            final LogContext log = list.pop();
+            final LogContext ctx = list.pop();
 
-            log.endTime(System.currentTimeMillis());
-            log.output()
-                    .write(log);
+            final Object loggableObject = ctx.loggableObject();
+            if (loggableObject != null && loggableObject instanceof LoggableCallback) {
+                final LoggableCallback callback = (LoggableCallback) loggableObject;
+
+                try {
+                    callback.afterLoggable();
+                } catch (Exception e) {
+                    ctx.throwable(e);
+                }
+            }
+
+            ctx.endTime(System.currentTimeMillis());
+            ctx.output()
+                    .write(ctx);
 
             // recover old MDC variables and old thread name
-            log.clearMDC()
+            ctx.clearMDC()
                     .recoverThreadName();
         } else {
             throw new RuntimeException("Empty stack");

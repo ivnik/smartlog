@@ -3,7 +3,6 @@ package org.smartlog.format;
 import org.smartlog.LogContext;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 
 /**
  *

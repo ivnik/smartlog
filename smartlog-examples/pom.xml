@@ -41,7 +41,7 @@
                     <showWeaveInfo>true</showWeaveInfo>
                     <verbose>true</verbose>
                     <Xlint>ignore</Xlint>
-                    <encoding>UTF-8 </encoding>
+                    <encoding>UTF-8</encoding>
                     <aspectLibraries>
                         <aspectLibrary>
                             <groupId>org.smartlog</groupId>

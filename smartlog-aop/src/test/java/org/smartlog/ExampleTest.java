@@ -2,7 +2,6 @@ package org.smartlog;
 
 import org.junit.Test;
 import org.smartlog.aop.Loggable;
-import org.smartlog.aop.LoggableCallback;
 import org.smartlog.format.SimpleTextFormat;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;

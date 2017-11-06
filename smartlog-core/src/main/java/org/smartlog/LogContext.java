@@ -19,7 +19,12 @@ public class LogContext implements AutoCloseable {
     private final long startTime = currentTimeMillis();
     private long endTime = 0;
 
+    @Nonnull
     private Output output;
+
+    @Nullable
+    private Object loggableObject;
+
     /**
      * Log level
      */
@@ -79,7 +84,6 @@ public class LogContext implements AutoCloseable {
     @Nullable
     private Map<String, Object> attrs = null;
 
-
     /**
      * Old thread name
      */
@@ -87,7 +91,12 @@ public class LogContext implements AutoCloseable {
     private String oldThreadName;
 
 
-    protected LogContext(final Output output) {
+    protected LogContext(@Nonnull final Output output, @Nonnull final Object loggableObject) {
+        this(output);
+        this.loggableObject = loggableObject;
+    }
+
+    protected LogContext(@Nonnull final Output output) {
         this.output = output;
     }
 
@@ -97,6 +106,16 @@ public class LogContext implements AutoCloseable {
 
     public LogContext output(final Output output) {
         this.output = output;
+        return this;
+    }
+
+    @Nullable
+    public Object loggableObject() {
+        return loggableObject;
+    }
+
+    public LogContext loggableObject(@Nullable final Object loggableObject) {
+        this.loggableObject = loggableObject;
         return this;
     }
 
