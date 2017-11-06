@@ -149,7 +149,7 @@ public class LogContext implements AutoCloseable {
     }
 
     @Nonnull
-    public LogContext title(@Nullable final String title, final Object[] titleArgs) {
+    public LogContext title(@Nullable final String title, final Object... titleArgs) {
         this.title = title;
         this.titleArgs = titleArgs;
         return this;

@@ -125,7 +125,7 @@ public class Slf4JOutput implements Output {
 
         private Boolean replaceCrLf;
 
-        public Builder() {
+        protected Builder() {
         }
 
         public Builder withLogger(final Logger logger) {

@@ -119,6 +119,16 @@ public class SmartLog {
     }
 
     @Nonnull
+    public static LogContext trace(@Nonnull final TraceFlag flag, @Nonnull final String msg) {
+        return current().trace(flag, msg);
+    }
+
+    @Nonnull
+    public LogContext trace(@Nonnull final TraceFlag flag, @Nonnull final String msg, @Nonnull final Object... args) {
+        return current().trace(flag, msg, args);
+    }
+
+    @Nonnull
     public static LogContext result(final Object result) {
         return current().result(result);
     }

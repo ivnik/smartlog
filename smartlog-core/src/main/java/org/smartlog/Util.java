@@ -11,8 +11,10 @@ public class Util {
         for (final char ch : src) {
             switch (ch) {
                 case 10:
-                case 13:
                     dest.append("\\n");
+                    break;
+                case 13:
+                    dest.append("\\r");
                     break;
                 default:
                     dest.append(ch);
