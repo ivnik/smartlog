@@ -1,29 +1,20 @@
 TODO:
 
-
 dev:
 
-1. write tests
-2. write examples & documentation
-3. advanced log format (conditionals, date/number formats, mdc/std attr, keep/strip cr/lf, attr toString/jsondump)
-4. make configurable:
-    - keep/strip cr/lf
-    - reaction on errors: failfast, log
-5. add trace with exception (and class:line info)
+1. write examples & documentation
+2. advanced log format (conditionals, date/number formats, mdc/std attr, keep/strip cr/lf, attr toString/jsondump)
+3. add trace with exception (and class:line info)
 
 other:
 1. register on maven central (http://central.sonatype.org/pages/producers.html)
-3. ci: travis?
-4. benchmark
-5. profile - check bottlenecks [low]
-6. documentation - using aspects a) CTW b) LTW c) spring aop
-7. test coverate (jacoco?)
-8. add/check java 9 support, create multi-release jar
-9. aop alternatives:
+2. benchmark
+3. profile - check bottlenecks [low]
+4. documentation - using aspects a) CTW b) LTW c) spring aop
+5. add/check java 9 support, create multi-release jar
+6. aop alternatives:
     * annotation processor (as separate module)
     * java agent with byte code instrumentation
-    *
-10. mvnw
 
 low level:
 1. json format / integration with logstash?
