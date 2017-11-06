@@ -17,6 +17,14 @@ public class SmartLog {
 
         return ctx;
     }
+
+    @Nonnull
+    public static LogContext start(@Nonnull final Object loggableObject) {
+        final Class clazz = Util.findRootEnclosingClass(loggableObject.getClass());
+        final Output output =  SmartLogConfig.getConfig().getDefaultOutput(clazz);
+        return start(output, loggableObject);
+    }
+
     @Nonnull
     public static LogContext start(@Nonnull final Output output, @Nullable final Object loggableObject) {
         final LogContext ctx = start(output)

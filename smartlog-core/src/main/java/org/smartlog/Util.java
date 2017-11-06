@@ -23,4 +23,17 @@ public class Util {
 
         return dest.toString();
     }
+
+    @Nonnull
+    public static Class findRootEnclosingClass(@Nonnull final Class clazz) {
+        Class curr = clazz;
+        while (true) {
+            Class declaringClass = curr.getEnclosingClass();
+            if (declaringClass != null) {
+                curr = declaringClass;
+            } else {
+                return curr;
+            }
+        }
+    }
 }

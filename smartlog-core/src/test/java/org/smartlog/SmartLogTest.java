@@ -115,6 +115,22 @@ public class SmartLogTest {
     }
 
     @Test
+    public void testDefaultOutput() throws Exception {
+        final Object loggableCallback = new LoggableCallback() {
+        };
+        final Output output = mock(Output.class);
+        SmartLogConfig.getConfig().setDefaultOutputResolver(clazz -> {
+            // should be external class
+            Assertions.assertThat(clazz).isEqualTo(SmartLogTest.class);
+            return output;
+        });
+
+        SmartLog.start(loggableCallback);
+        Assertions.assertThat(SmartLog.current().output()).isSameAs(output);
+        SmartLog.finish();
+    }
+
+    @Test
     public void testMdc() throws Exception {
         MDC.put("mdc-var1", "mdc-oldval");
 

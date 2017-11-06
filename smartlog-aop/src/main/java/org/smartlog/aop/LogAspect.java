@@ -9,6 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.smartlog.LogContext;
 import org.smartlog.SmartLog;
 import org.smartlog.SmartLogConfig;
+import org.smartlog.Util;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
@@ -32,19 +33,6 @@ public class LogAspect {
         }
 
         return loggable;
-    }
-
-    @Nonnull
-    private static Class findRootDeclaringClass(final Class clazz) {
-        Class curr = clazz;
-        while (true) {
-            Class declaringClass = curr.getDeclaringClass();
-            if (declaringClass != null) {
-                curr = declaringClass;
-            } else {
-                return curr;
-            }
-        }
     }
 
     @Before("execution(@org.smartlog.aop.Loggable * *(..))")
@@ -81,7 +69,7 @@ public class LogAspect {
 
         // use default output if @Loggable method didn't change output
         if (ctx.output() == STUB) {
-            final Class clazz = findRootDeclaringClass(joinPoint.getSignature().getDeclaringType());
+            final Class clazz = Util.findRootEnclosingClass(joinPoint.getSignature().getDeclaringType());
             final Output output = SmartLogConfig.getConfig().getDefaultOutput(clazz);
 
             ctx.output(output);
