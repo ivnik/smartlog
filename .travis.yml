@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk9
+#  - oraclejdk9   # -- wait for aspectj 1.9.x
   - oraclejdk8
   - openjdk8
 sudo: false # faster builds
