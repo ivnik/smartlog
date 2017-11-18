@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>smartlog</artifactId>
-        <groupId>org.smartlog</groupId>
+        <artifactId>smartlog-parent-pom</artifactId>
+        <groupId>io.github.ivnik</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,12 +13,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.smartlog</groupId>
+            <groupId>io.github.ivnik</groupId>
             <artifactId>smartlog-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.smartlog</groupId>
+            <groupId>io.github.ivnik</groupId>
             <artifactId>smartlog-aop</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -44,7 +44,7 @@
                     <encoding>UTF-8</encoding>
                     <aspectLibraries>
                         <aspectLibrary>
-                            <groupId>org.smartlog</groupId>
+                            <groupId>io.github.ivnik</groupId>
                             <artifactId>smartlog-aop</artifactId>
                         </aspectLibrary>
                     </aspectLibraries>
@@ -67,7 +67,7 @@
                         <version>${aspectj.runtime.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>org.smartlog</groupId>
+                        <groupId>io.github.ivnik</groupId>
                         <artifactId>smartlog-aop</artifactId>
                         <version>0.0.1-SNAPSHOT</version>
                     </dependency>
