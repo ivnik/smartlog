@@ -323,7 +323,7 @@ public class SmartLogTest {
         try {
             SmartLog.current();
         } catch (Exception e) {
-            Assertions.assertThat(e).hasMessage("Empty stack");
+            Assertions.assertThat(e).hasMessage("Loggable context is absent");
         }
     }
 
@@ -332,7 +332,7 @@ public class SmartLogTest {
         try {
             SmartLog.finish();
         } catch (Exception e) {
-            Assertions.assertThat(e).hasMessage("Empty stack");
+            Assertions.assertThat(e).hasMessage("Loggable context is absent");
         }
     }
 }
