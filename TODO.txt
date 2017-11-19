@@ -1,0 +1,20 @@
+TODO:
+
+dev:
+
+1. write examples & documentation
+2. advanced log format (conditionals, date/number formats, mdc/std attr, keep/strip cr/lf, attr toString/jsondump)
+3. add trace with exception (and class:line info)
+
+other:
+1. register on maven central (http://central.sonatype.org/pages/producers.html)
+2. benchmark
+3. profile - check bottlenecks [low]
+4. documentation - using aspects a) CTW b) LTW c) spring aop
+5. add/check java 9 support, create multi-release jar
+6. aop alternatives:
+    * annotation processor (as separate module)
+    * java agent with byte code instrumentation
+
+low level:
+1. json format / integration with logstash?
