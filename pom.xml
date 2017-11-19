@@ -15,6 +15,7 @@
 
     <name>Smart log</name>
     <url>https://github.com/ivnik/smartlog</url>
+    <description>yet another logging framework for java</description>
 
     <licenses>
         <license>
@@ -129,7 +130,7 @@
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                     <plugin>
