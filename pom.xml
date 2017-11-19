@@ -134,16 +134,13 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
-
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>2.5.3</version>
+                        <groupId>external.atlassian.jgitflow</groupId>
+                        <artifactId>jgitflow-maven-plugin</artifactId>
+                        <version>1.0-m5.1</version>
                         <configuration>
+                            <allowUntracked>true</allowUntracked>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <useReleaseProfile>false</useReleaseProfile>
-                            <releaseProfiles>release</releaseProfiles>
-                            <goals>deploy</goals>
                         </configuration>
                     </plugin>
                 </plugins>
