@@ -6,10 +6,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.smartlog.LogContext;
-import org.smartlog.SmartLog;
-import org.smartlog.SmartLogConfig;
-import org.smartlog.Util;
+import org.smartlog.*;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
@@ -37,12 +34,7 @@ public class LogAspect {
 
     @Before("execution(@org.smartlog.aop.Loggable * *(..))")
     public void beforeLoggable(final JoinPoint joinPoint) throws Throwable {
-        final Loggable loggable = findLoggable(joinPoint);
-
         final LogContext ctx = SmartLog.start(STUB, joinPoint.getTarget());
-        if (ctx.level() == null) {
-            ctx.level(loggable.defaultLevel());
-        }
     }
 
     @AfterReturning(value = "execution(@org.smartlog.aop.Loggable * *(..))", returning = "ret")
@@ -54,10 +46,15 @@ public class LogAspect {
         finish(joinPoint, ctx);
     }
 
-
     @AfterThrowing(value = "execution(@org.smartlog.aop.Loggable * *(..))", throwing = "t")
     public void afterThrowingLoggable(final JoinPoint joinPoint, final Throwable t) throws Throwable {
         final LogContext ctx = SmartLog.throwable(t);
+
+        if (ctx.level() == null) {
+            // use ERROR level by default when got uncaught exception
+            ctx.level(LogLevel.ERROR);
+        }
+
         finish(joinPoint, ctx);
     }
 
@@ -65,6 +62,11 @@ public class LogAspect {
         // use method name if title is not set
         if (ctx.title() == null) {
             ctx.title(joinPoint.getSignature().getName());
+        }
+
+        if (ctx.level() == null) {
+            final Loggable loggable = findLoggable(joinPoint);
+            ctx.level(loggable.defaultLevel());
         }
 
         // use default output if @Loggable method didn't change output
