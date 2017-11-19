@@ -55,6 +55,13 @@ public class LogAspect {
             ctx.level(LogLevel.ERROR);
         }
 
+        final Object result = ctx.result();
+        if (result == null) {
+            ctx.result(t.toString());
+        } else {
+            ctx.result(result.toString() + "; " + t.toString());
+        }
+
         finish(joinPoint, ctx);
     }
 
