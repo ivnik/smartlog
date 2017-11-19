@@ -28,7 +28,7 @@
 
     <scm>
         <connection>scm:git:git@github.com:ivnik/smartlog.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ivnik/smartlog.git</developerConnection>
+        <developerConnection>scm:git:github.com:ivnik/smartlog.git</developerConnection>
         <url>https://github.com/ivnik/smartlog</url>
     </scm>
 
