@@ -40,6 +40,9 @@ java.lang.RuntimeException: example uncaught exception
 3. Custom title, result and trace
 
 ```java
+import static org.smartlog.TraceFlag.MARK_TIME;
+import static org.smartlog.TraceFlag.WRITE_TIME;
+
 @Loggable
 public static void example3() {
     SmartLog.title("Custom title");
