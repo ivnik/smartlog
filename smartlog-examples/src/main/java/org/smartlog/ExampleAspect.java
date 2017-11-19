@@ -1,30 +1,46 @@
 package org.smartlog;
 
 import org.smartlog.aop.Loggable;
-import org.smartlog.format.SimpleTextFormat;
 import org.smartlog.output.Output;
 import org.smartlog.output.Slf4JOutput;
 
-/**
- * todo - make mock Output and add checks
- */
+import static org.smartlog.TraceFlag.MARK_TIME;
+import static org.smartlog.TraceFlag.WRITE_TIME;
+
 public class ExampleAspect implements LoggableCallback {
     private static final Output SL_OUTPUT = Slf4JOutput.create()
             .withLoggerFor(ExampleAspect.class)
-            .withFormat(new SimpleTextFormat("${title}, result: [${result}], var=${var}, trace: [${trace}] [${time} ms]"))
+//            .withFormat(new SimpleTextFormat("${title}, result: [${result}], var=${var}, trace: [${trace}] [${time} ms]"))
             .build();
 
     @Loggable
-    public static void example1() {
-        SmartLog.trace("test");
-        SmartLog.trace("hello %s", "alice");
-
-        SmartLog.result("OK");
+    public static int example1() {
+        return 42;
     }
 
     @Loggable
-    public static void example2MultipleExceptions() {
-        SmartLog.title("example2");
+    public static void example2() {
+        throw new RuntimeException("example uncaught exception");
+    }
+
+    @Loggable
+    public static void example3() {
+        SmartLog.title("Custom title");
+
+        SmartLog.trace(MARK_TIME, "make request to...");
+        // request remote server
+        SmartLog.trace(WRITE_TIME, "got result %d", 42);
+
+        SmartLog.trace("try parse");
+        // parse
+        SmartLog.trace("ok");
+
+        SmartLog.result("custom result");
+    }
+
+    @Loggable
+    public static void example4() {
+        SmartLog.title("it's example4");
 
         SmartLog.throwable(new RuntimeException("exception1"));
         SmartLog.throwable(new RuntimeException("exception2"));
@@ -33,13 +49,13 @@ public class ExampleAspect implements LoggableCallback {
     }
 
     @Loggable
-    public static String example3ResultFromReturnValue(final int value) {
-        SmartLog.title("example3(%d)", value);
+    public static String example5(final int value) {
+        SmartLog.title("it's example5, arg=%d", value);
         return String.valueOf(value);
     }
 
     @Loggable(defaultLevel = LogLevel.DEBUG)
-    public static void example4() {
+    public static void example5() {
     }
 
     @Override
@@ -49,8 +65,15 @@ public class ExampleAspect implements LoggableCallback {
 
     public static void main(final String[] args) {
         ExampleAspect.example1();
-        ExampleAspect.example2MultipleExceptions();
-        ExampleAspect.example3ResultFromReturnValue(5);
+
+        try {
+            ExampleAspect.example2();
+        } catch (RuntimeException ignore) {
+        }
+
+        ExampleAspect.example3();
         ExampleAspect.example4();
+        ExampleAspect.example5(5);
+        ExampleAspect.example5();
     }
 }

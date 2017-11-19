@@ -7,9 +7,9 @@ import org.smartlog.output.Slf4JOutput;
 /**
  *
  */
-public class Example {
+public class ExampleNoAspect {
     private static final Output SL_OUTPUT = Slf4JOutput.create()
-            .withLoggerFor(Example.class)
+            .withLoggerFor(ExampleNoAspect.class)
             .withFormat(new SimpleTextFormat("${title}, result: [${result}], var=${var}, trace: [${trace}] [${time} ms]"))
             .build();
 
@@ -42,7 +42,7 @@ public class Example {
     }
 
     public static void main(final String[] args) {
-        Example.example1();
-        Example.example2();
+        ExampleNoAspect.example1();
+        ExampleNoAspect.example2();
     }
 }

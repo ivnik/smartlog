@@ -312,7 +312,6 @@ public class LogContext implements AutoCloseable {
     @Nonnull
     public LogContext pushMDC(@Nonnull final String key, @Nullable final String value) {
         if (mdcStack == null) {
-            // todo ArrayList?
             mdcStack = new LinkedList<>();
         }
 

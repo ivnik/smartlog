@@ -67,7 +67,7 @@ public class SmartLog {
             ctx.clearMDC()
                     .recoverThreadName();
         } else {
-            throw new RuntimeException("Empty stack");
+            throw new RuntimeException("Loggable context is absent");
         }
     }
 
@@ -77,7 +77,7 @@ public class SmartLog {
         if (!list.isEmpty()) {
             return list.getLast();
         } else {
-            throw new RuntimeException("Empty stack");
+            throw new RuntimeException("Loggable context is absent");
         }
     }
 

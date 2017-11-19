@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * todo - write tests
- */
 public class SimpleTextFormat implements Format {
     private static final Pattern DEFAULT_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.*?)\\}");
 
