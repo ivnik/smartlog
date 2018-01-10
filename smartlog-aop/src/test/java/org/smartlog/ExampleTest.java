@@ -64,12 +64,7 @@ public class ExampleTest implements LoggableCallback {
     }
 
     @Loggable
-    private static void someNestedLoggable() throws SomeException {
-        throw new SomeException();
-    }
-
-    @Test
-    public void testNestedLoggableMethodExceptionHandling() throws Exception {
+    public void testNestedLoggableMethodExceptionHandlingLog()throws SomeException {
         SmartLog.trace("start");
         try {
             someNestedLoggable();
@@ -77,6 +72,16 @@ public class ExampleTest implements LoggableCallback {
             SmartLog.throwable(e);
         }
         SmartLog.title("OK");
+    }
+
+    @Loggable
+    private static void someNestedLoggable() throws SomeException {
+        throw new SomeException();
+    }
+
+    @Test
+    public void testNestedLoggableMethodExceptionHandling() throws Exception {
+        testNestedLoggableMethodExceptionHandlingLog();
     }
 
 }

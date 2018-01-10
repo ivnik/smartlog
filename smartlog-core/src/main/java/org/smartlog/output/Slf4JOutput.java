@@ -45,7 +45,10 @@ public class Slf4JOutput implements Output {
 
         if (throwable != null && suppressedThrowables != null) {
             for (Throwable t : suppressedThrowables) {
-                throwable.addSuppressed(t);
+                // don't let it supress itself
+                if (throwable != t) {
+                    throwable.addSuppressed(t);
+                }
             }
         }
 
