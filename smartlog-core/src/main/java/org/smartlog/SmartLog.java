@@ -6,6 +6,7 @@ import org.smartlog.output.Output;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class SmartLog {
     private static final ThreadLocal<LinkedList<LogContext>> CONTEXTS = ThreadLocal.withInitial(LinkedList::new);
@@ -73,9 +74,9 @@ public class SmartLog {
 
     @Nonnull
     public static LogContext current() {
-        final LinkedList<LogContext> list = CONTEXTS.get();
-        if (!list.isEmpty()) {
-            return list.getLast();
+        final Queue<LogContext> contextQueue = CONTEXTS.get();
+        if (!contextQueue.isEmpty()) {
+            return contextQueue.peek();
         } else {
             throw new RuntimeException("Loggable context is absent");
         }
