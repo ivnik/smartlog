@@ -5,11 +5,11 @@ import org.smartlog.output.Output;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class SmartLog {
-    private static final ThreadLocal<LinkedList<LogContext>> CONTEXTS = ThreadLocal.withInitial(LinkedList::new);
+    private static final ThreadLocal<Deque<LogContext>> CONTEXTS = ThreadLocal.withInitial(LinkedList::new);
 
     @Nonnull
     public static LogContext start(@Nonnull final Output output) {
@@ -22,7 +22,7 @@ public class SmartLog {
     @Nonnull
     public static LogContext start(@Nonnull final Object loggableObject) {
         final Class clazz = Util.findRootEnclosingClass(loggableObject.getClass());
-        final Output output =  SmartLogConfig.getConfig().getDefaultOutput(clazz);
+        final Output output = SmartLogConfig.getConfig().getDefaultOutput(clazz);
         return start(output, loggableObject);
     }
 
@@ -45,7 +45,7 @@ public class SmartLog {
     }
 
     public static void finish() {
-        final LinkedList<LogContext> list = CONTEXTS.get();
+        final Deque<LogContext> list = CONTEXTS.get();
         if (!list.isEmpty()) {
             final LogContext ctx = list.pop();
 
@@ -74,7 +74,7 @@ public class SmartLog {
 
     @Nonnull
     public static LogContext current() {
-        final Queue<LogContext> contextQueue = CONTEXTS.get();
+        final Deque<LogContext> contextQueue = CONTEXTS.get();
         if (!contextQueue.isEmpty()) {
             return contextQueue.peek();
         } else {
