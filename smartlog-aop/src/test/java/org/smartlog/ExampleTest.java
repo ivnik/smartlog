@@ -56,4 +56,32 @@ public class ExampleTest implements LoggableCallback {
         ExampleTest.example3ResultFromReturnValue(5);
         ExampleTest.example4();
     }
+
+
+
+    private static class SomeException extends Exception {
+
+    }
+
+    @Loggable
+    public void testNestedLoggableMethodExceptionHandlingLog()throws SomeException {
+        SmartLog.trace("start");
+        try {
+            someNestedLoggable();
+        } catch (SomeException e) {
+            SmartLog.throwable(e);
+        }
+        SmartLog.title("OK");
+    }
+
+    @Loggable
+    private static void someNestedLoggable() throws SomeException {
+        throw new SomeException();
+    }
+
+    @Test
+    public void testNestedLoggableMethodExceptionHandling() throws Exception {
+        testNestedLoggableMethodExceptionHandlingLog();
+    }
+
 }
