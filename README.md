@@ -100,7 +100,7 @@ log output:
         <aspectLibraries>
             <aspectLibrary>
                 <groupId>io.github.ivnik</groupId>
-                <artifactId>smartlog</artifactId>
+                <artifactId>smartlog-aop</artifactId>
                 <version>0.0.1</version>
             </aspectLibrary>
         </aspectLibraries>
