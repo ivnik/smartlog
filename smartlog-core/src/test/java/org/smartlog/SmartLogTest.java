@@ -335,4 +335,17 @@ public class SmartLogTest {
             Assertions.assertThat(e).hasMessage("Loggable context is absent");
         }
     }
+
+    @Test
+    public void testNestedContexts() throws Exception {
+        Output output = mock(Output.class);
+
+        final LogContext outer = SmartLog.start(output);
+        final LogContext inner = SmartLog.start(output);
+
+        assertThat(SmartLog.current()).isSameAs(inner);
+        SmartLog.finish();
+        assertThat(SmartLog.current()).isSameAs(outer);
+        SmartLog.finish();
+    }
 }
