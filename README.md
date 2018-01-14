@@ -2,8 +2,11 @@
 
 [![ci-travis](https://api.travis-ci.org/ivnik/smartlog.svg?branch=develop)](https://travis-ci.org/ivnik/smartlog)
 [![codecov](https://codecov.io/gh/ivnik/smartlog/branch/develop/graph/badge.svg)](https://codecov.io/gh/ivnik/smartlog)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ivnik/smartlog.svg)](http://search.maven.org/#artifactdetails%7Cio.github.ivnik%7Csmartlog%7C0.0.2%7C)
 
 ## About
+
+Last version: 0.0.2
 
 TODO
 
@@ -71,7 +74,7 @@ log output:
     <dependency>
         <groupId>io.github.ivnik</groupId>
         <artifactId>smartlog</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
     </dependency>
 </dependencies>
 ```
@@ -86,7 +89,7 @@ log output:
     <dependency>
         <groupId>io.github.ivnik</groupId>
         <artifactId>smartlog</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
     </dependency>
 </dependencies>
 <plugin>
@@ -101,7 +104,7 @@ log output:
             <aspectLibrary>
                 <groupId>io.github.ivnik</groupId>
                 <artifactId>smartlog-aop</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </aspectLibrary>
         </aspectLibraries>
     </configuration>
