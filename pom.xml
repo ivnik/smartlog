@@ -90,7 +90,6 @@
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <skip>true</skip>
                                     <outputDirectory>${project.basedir}</outputDirectory>
                                     <resources>
                                         <resource>
