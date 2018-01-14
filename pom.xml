@@ -85,11 +85,12 @@
                         <executions>
                             <execution>
                                 <id>readme-md</id>
-                                <phase>process-resources</phase>
+                                <phase>none</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
+                                    <skip>true</skip>
                                     <outputDirectory>${project.basedir}</outputDirectory>
                                     <resources>
                                         <resource>
