@@ -262,9 +262,9 @@ public class SmartLogTest {
     public void testMdc() throws Exception {
         MDC.put("mdc-var1", "mdc-oldval");
 
-        SmartLog.start(output)
-                .pushMDC("mdc-var1", "mdc-val1")
-                .pushMDC("mdc-var2", "mdc-val2");
+        SmartLog.start(output);
+        SmartLog.pushMDC("mdc-var1", "mdc-val1");
+        SmartLog.pushMDC("mdc-var2", "mdc-val2");
 
         assertThat(MDC.get("mdc-var1")).isEqualTo("mdc-val1");
         assertThat(MDC.get("mdc-var2")).isEqualTo("mdc-val2");
@@ -279,8 +279,8 @@ public class SmartLogTest {
     public void testThreadName() throws Exception {
         final String oldName = Thread.currentThread().getName();
 
-        final LogContext ctx = SmartLog.start(output)
-                .threadName("new-thread-name");
+        final LogContext ctx = SmartLog.start(output);
+        SmartLog.threadName("new-thread-name");
 
 
         assertThat(ctx.oldThreadName()).isEqualTo(oldName);

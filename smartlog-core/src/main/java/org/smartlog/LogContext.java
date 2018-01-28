@@ -195,8 +195,8 @@ public class LogContext implements AutoCloseable {
     }
 
     @Nonnull
-    public LogContext result(final String description, final Object... args) {
-        return result(String.format(description, args));
+    public LogContext result(final String format, final Object... args) {
+        return result(String.format(format, args));
     }
 
     @Nonnull
@@ -206,9 +206,9 @@ public class LogContext implements AutoCloseable {
     }
 
     @Nonnull
-    public LogContext result(final LogLevel level, final String description, final Object... args) {
+    public LogContext result(final LogLevel level, final String format, final Object... args) {
         return level(level)
-                .result(String.format(description, args));
+                .result(String.format(format, args));
     }
 
     @Nonnull
@@ -219,8 +219,8 @@ public class LogContext implements AutoCloseable {
     }
 
     @Nonnull
-    public LogContext result(final LogLevel level, final Throwable throwable, final String description, final Object... args) {
-        return result(level, throwable, String.format(description, args));
+    public LogContext result(final LogLevel level, final Throwable throwable, final String format, final Object... args) {
+        return result(level, throwable, String.format(format, args));
     }
 
     @Nullable
@@ -305,8 +305,8 @@ public class LogContext implements AutoCloseable {
     }
 
     @Nonnull
-    public LogContext trace(@Nonnull final TraceFlag flag, @Nonnull final String msg, @Nonnull final Object... args) {
-        return trace(flag, String.format(msg, args));
+    public LogContext trace(@Nonnull final TraceFlag flag, @Nonnull final String format, @Nonnull final Object... args) {
+        return trace(flag, String.format(format, args));
     }
 
     @Nonnull
