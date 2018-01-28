@@ -68,7 +68,12 @@ log output:
 
 ## Getting started
 
+Examples: [smartlog-examples](https://github.com/ivnik/smartlog-examples/)
+
+
 ### Maven
+
+
 ```xml
 <dependencies>
     <dependency>
@@ -78,7 +83,7 @@ log output:
     </dependency>
 </dependencies>
 ```
-#### Configure AspectJ for compile time weaving (TODO - add example for LTW)
+#### Configure AspectJ for compile time weaving [example project](https://github.com/ivnik/smartlog-examples/tree/master/smartlog-aop-ctw-maven)
 ```xml
 <dependencies>
     <dependency>
@@ -119,4 +124,8 @@ log output:
 </plugin>
 ```
 
-### Gradle - TODO
+### Gradle [example project](https://github.com/ivnik/smartlog-examples/tree/master/smartlog-aop-ctw-maven)
+
+```groovy
+compile 'io.github.ivnik:smartlog-core:${release.version}'
+```

@@ -9,7 +9,6 @@
     <modules>
         <module>smartlog-aop</module>
         <module>smartlog-core</module>
-        <module>smartlog-examples</module>
         <module>smartlog-all</module>
     </modules>
 

@@ -2,11 +2,11 @@
 
 [![ci-travis](https://api.travis-ci.org/ivnik/smartlog.svg?branch=develop)](https://travis-ci.org/ivnik/smartlog)
 [![codecov](https://codecov.io/gh/ivnik/smartlog/branch/develop/graph/badge.svg)](https://codecov.io/gh/ivnik/smartlog)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.ivnik/smartlog.svg)](http://search.maven.org/#artifactdetails%7Cio.github.ivnik%7Csmartlog%7C0.0.2%7C)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ivnik/smartlog.svg)](http://search.maven.org/#artifactdetails%7Cio.github.ivnik%7Csmartlog%7C0.0.3-SNAPSHOT%7C)
 
 ## About
 
-Last version: 0.0.2
+Last version: 0.0.3-SNAPSHOT
 
 TODO
 
@@ -68,17 +68,22 @@ log output:
 
 ## Getting started
 
+Examples: [smartlog-examples](https://github.com/ivnik/smartlog-examples/)
+
+
 ### Maven
+
+
 ```xml
 <dependencies>
     <dependency>
         <groupId>io.github.ivnik</groupId>
         <artifactId>smartlog</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
-#### Configure AspectJ for compile time weaving (TODO - add example for LTW)
+#### Configure AspectJ for compile time weaving [example project](https://github.com/ivnik/smartlog-examples/tree/master/smartlog-aop-ctw-maven)
 ```xml
 <dependencies>
     <dependency>
@@ -89,7 +94,7 @@ log output:
     <dependency>
         <groupId>io.github.ivnik</groupId>
         <artifactId>smartlog</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </dependency>
 </dependencies>
 <plugin>
@@ -104,7 +109,7 @@ log output:
             <aspectLibrary>
                 <groupId>io.github.ivnik</groupId>
                 <artifactId>smartlog-aop</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3-SNAPSHOT</version>
             </aspectLibrary>
         </aspectLibraries>
     </configuration>
@@ -119,4 +124,8 @@ log output:
 </plugin>
 ```
 
-### Gradle - TODO
+### Gradle [example project](https://github.com/ivnik/smartlog-examples/tree/master/smartlog-aop-ctw-maven)
+
+```groovy
+compile 'io.github.ivnik:smartlog-core:0.0.3-SNAPSHOT'
+```
